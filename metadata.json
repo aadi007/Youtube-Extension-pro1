@@ -1,0 +1,6 @@
+{
+  "name": "YouTube SEO Pro",
+  "description": "AI-powered YouTube SEO generator. Create timestamps, titles, and descriptions in seconds using transcripts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["AI Content Generation", "SEO Optimization"]
+}

@@ -1,11 +1,11 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import { createServer as createViteServer } from "vite";
 import { createClient } from "@supabase/supabase-js";
 import OpenAI from "openai";
 import cors from "cors";
 import dotenv from "dotenv";
+import fs from "fs";
 
 dotenv.config();
 
@@ -28,6 +28,11 @@ async function startServer() {
 
   app.use(cors());
   app.use(express.json({ limit: '10mb' }));
+
+  // API: Health Check
+  app.get("/api/health", (req, res) => {
+    res.json({ status: "healthy", timestamp: new Date().toISOString() });
+  });
 
   // API: GENERATE CONTENT (YouTube SEO)
   app.post("/api/generate", async (req, res) => {
@@ -90,17 +95,16 @@ async function startServer() {
   });
 
   // Serve Frontend
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), "dist");
+  const distPath = path.join(process.cwd(), "dist");
+  
+  if (fs.existsSync(distPath)) {
     app.use(express.static(distPath));
     app.get("*", (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
+    });
+  } else {
+    app.get("/", (req, res) => {
+      res.json({ message: "SEO Backend API is running successfully. Connect your Frontend to this URL." });
     });
   }
 
