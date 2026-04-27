@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "tsx server.ts",
     "start": "tsx server.ts",
-    "build": "echo 'Skipping frontend build for standalone backend'",
+    "build": "echo 'Build skipped: using tsx for runtime'",
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
