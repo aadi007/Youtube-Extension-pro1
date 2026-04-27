@@ -22,12 +22,19 @@ Chrome cannot run the files you see in the folder directly. You must "build" the
 3. Get your `SUPABASE_URL` and `SUPABASE_ANON_KEY` from Settings > API.
 
 ## 3. Backend Deployment (Railway)
-1. Link your GitHub repo to [Railway](https://railway.app).
-2. Set these variables in Railway:
-   - `OPENAI_API_KEY`: Your key.
-   - `SUPABASE_URL`: From step 2.
-   - `SUPABASE_ANON_KEY`: From step 2.
-3. Once deployed, get your Railway App URL (e.g., `https://project-production.up.railway.app`).
+1. **GitHub Sync**: Push your code to GitHub and link the repo to [Railway](https://railway.app).
+2. **Environment Variables**: In Railway, go to the **Variables** tab and add:
+   - `OPENAI_API_KEY`: Your OpenAI Secret Key.
+   - `SUPABASE_URL`: Your Supabase Project URL.
+   - `SUPABASE_ANON_KEY`: Your Supabase Anon Key.
+   - `NODE_ENV`: Set this to `production`.
+3. **Automatic Build**: Railway will automatically see the `build` script in `package.json`, compile your code, and start the server using the compiled file.
+4. **URL**: Once deployed, Railway provides a public URL (e.g., `https://your-app.up.railway.app`). Use this URL in your frontend `.env` as `VITE_API_URL`.
+
+### Important Notes
+- **Why was I getting a ".ts" error?**: Production servers (Node.js) don't speak TypeScript natively. I added a build step that converts your TypeScript into standard JavaScript. 
+- **Do I upload node_modules?**: NO. Railway installs them for you.
+- **Port**: The backend is configured to run on Port 3000, which is standard.
 
 ## 4. Final Extension Build
 1. In your local `.env` file, set `VITE_API_URL` to your Railway URL from Step 3.
